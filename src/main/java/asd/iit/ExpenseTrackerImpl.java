@@ -208,6 +208,44 @@ public class ExpenseTrackerImpl implements ExpenseTracker {
 
     }
 
+    @Override
+    public String calculateOverallBudgetConsumption() {
+
+        String output = "";
+        Double totalBudget = 0d, usedBudget = 0d;
+        Map<String, Double> budgetUsage = new HashMap<>();
+        String budgetName = "";
+
+        //Calculating transactions expenses for each category
+        for (Transaction transaction : transactions) {
+            if (transaction.getCategory().getType() == TransactionType.EXPENSE) {
+                budgetName = transaction.getCategory().getName();
+                if (budgetUsage.containsKey(budgetName)) {
+                    budgetUsage.put(budgetName, (budgetUsage.get(budgetName) + transaction.getAmount()));
+                } else {
+                    budgetUsage.put(budgetName, transaction.getAmount());
+                }
+
+            }
+
+        }
+
+        //Check the overall budget
+        for (Budget bgt : budgets) {
+            totalBudget += bgt.getTotalBudgetAmount();
+
+            if (budgetUsage.containsKey(bgt.getName())) {
+                usedBudget += budgetUsage.get(bgt.getName());
+
+            }
+
+
+        }
+
+        output = "Total Budget: " + totalBudget + " Used Amount: " + usedBudget;
+        return output;
+    }
+
 
 }
 

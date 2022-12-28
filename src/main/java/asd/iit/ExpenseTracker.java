@@ -23,4 +23,5 @@ public interface ExpenseTracker {
 
     List<String> analyseTransactions();
 
+    String calculateOverallBudgetConsumption();
 }

@@ -83,6 +83,12 @@ public class ExpenseTrackerController {
         return new ResponseEntity<List<String>>(analyseTransactions, HttpStatus.OK);
     }
 
+    //6.1  as well as overall spending against overall budget.
+    @GetMapping("/usage")
+    public ResponseEntity<String> checkBudgetUsage() {
+        String budgetConsumption = expenseTrackerImpl.calculateOverallBudgetConsumption();
+        return new ResponseEntity<String>(budgetConsumption, HttpStatus.OK);
+    }
 
 }
 
