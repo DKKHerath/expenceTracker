@@ -1,6 +1,7 @@
 package asd.iit;
 
 import asd.iit.budget.Budget;
+import asd.iit.category.ExpenseCategory;
 import asd.iit.category.IncomeCategory;
 import asd.iit.category.TransactionCategory;
 import asd.iit.category.TransactionType;
@@ -30,9 +31,18 @@ public class ExpenseTrackerImpl implements ExpenseTracker {
         this.transactionCategories = new ArrayList<>();
 
         //4. Allow the user to see a list of categories. The application should come with some preset categories.
+
+        //Budget
+        budgets.add(new Budget("Food", 1000d, 10000d));
+
+        //INCOME
         transactionCategories.add(new IncomeCategory(TransactionType.INCOME, "Salary", "null"));
         transactionCategories.add(new IncomeCategory(TransactionType.INCOME, "Profit", "null"));
-        budgets.add(new Budget("TEST", 100d, 500d));
+
+        //EXPENSE
+        transactionCategories.add(new ExpenseCategory(TransactionType.EXPENSE, "Food", "null", budgets.get(0)));
+
+
     }
 
     //1. Allow a user to see a list of recent transactions
@@ -169,7 +179,7 @@ public class ExpenseTrackerImpl implements ExpenseTracker {
             if (transaction.getCategory().getType() == TransactionType.EXPENSE) {
                 budgetName = transaction.getCategory().getName();
                 if (budgetUsage.containsKey(budgetName)) {
-                    budgetUsage.put(budgetName, budgetUsage.get(budgetName) + transaction.getAmount());
+                    budgetUsage.put(budgetName, (budgetUsage.get(budgetName) + transaction.getAmount()));
                 } else {
                     budgetUsage.put(budgetName, transaction.getAmount());
                 }
@@ -182,12 +192,14 @@ public class ExpenseTrackerImpl implements ExpenseTracker {
         for (Budget bgt : budgets) {
 
             if (budgetUsage.containsKey(bgt.getName())) {
-                output.add(bgt.toString());
+                output.add("Budget Name:" + bgt.getName() +
+                        " Budget Usage: " + budgetUsage.get(bgt.getName()) +
+                        " Budget Remaining: " + (bgt.getTotalBudgetAmount() - budgetUsage.get(bgt.getName())));
 
-                //System.out.println("\nBudget Name: " + bgt.getName());
-                //System.out.println("Budget Amount: " + bgt.getTotalBudgetAmount());
-                //System.out.println("Budget Usage: " + budgetUsage.get(bgt.getName()));
-                //System.out.println("Budget Remaining: " + (bgt.getTotalBudgetAmount() - budgetUsage.get(bgt.getName())));
+                System.out.println("\nBudget Name: " + bgt.getName());
+                System.out.println("Budget Amount: " + bgt.getTotalBudgetAmount());
+                System.out.println("Budget Usage: " + budgetUsage.get(bgt.getName()));
+                System.out.println("Budget Remaining: " + (bgt.getTotalBudgetAmount() - budgetUsage.get(bgt.getName())));
             }
 
 
