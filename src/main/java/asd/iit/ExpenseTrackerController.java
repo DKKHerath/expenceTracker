@@ -4,23 +4,21 @@ import asd.iit.budget.Budget;
 import asd.iit.budget.BudgetModel;
 import asd.iit.category.CategoryModel;
 import asd.iit.category.TransactionCategory;
+import asd.iit.transaction.RecurrentType;
 import asd.iit.transaction.Transaction;
 import asd.iit.transaction.TransactionModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
 public class ExpenseTrackerController {
-
-
     private final ExpenseTrackerImpl expenseTrackerImpl;
 
     @Autowired
@@ -28,7 +26,7 @@ public class ExpenseTrackerController {
         this.expenseTrackerImpl = expenseTrackerImpl;
 
 
-        expenseTrackerImpl.saveTransaction("test", 1000d, "Salary", "desc", LocalDateTime.now(), null);
+//        expenseTrackerImpl.saveTransaction("test", 1000d, "Salary", "desc", LocalDateTime.now(), null);
     }
 
     //1. Allow a user to see a list of recent transactions
@@ -44,6 +42,7 @@ public class ExpenseTrackerController {
     // note and to specify whether it is recurring)
     @PostMapping("/transaction")
     public ResponseEntity<Transaction> createTransaction(@RequestBody TransactionModel transactionModel) {
+        System.out.println(transactionModel.toString());
         expenseTrackerImpl.saveTransaction(transactionModel.getTitle(), transactionModel.getAmount(), transactionModel.getCategory(), transactionModel.getDesc(), transactionModel.getDateTime(), transactionModel.getRecurrentType());
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -93,6 +92,12 @@ public class ExpenseTrackerController {
     public ResponseEntity<String> checkBudgetUsage() {
         String budgetConsumption = expenseTrackerImpl.calculateOverallBudgetConsumption();
         return new ResponseEntity<String>(budgetConsumption, HttpStatus.OK);
+    }
+
+    @GetMapping("/recurrent-types")
+    public ResponseEntity<List<RecurrentType>> getAllRecurrentTypes() {
+        List<RecurrentType> recurrentTypes = Arrays.asList(RecurrentType.values());
+        return ResponseEntity.ok(recurrentTypes);
     }
 
 }

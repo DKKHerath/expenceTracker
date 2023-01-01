@@ -66,4 +66,16 @@ public class TransactionModel {
     public void setRecurrentType(RecurrentType recurrentType) {
         this.recurrentType = recurrentType;
     }
+
+    @Override
+    public String toString() {
+        return "TransactionModel{" +
+                "title='" + title + '\'' +
+                ", amount=" + amount +
+                ", category='" + category + '\'' +
+                ", desc='" + desc + '\'' +
+                ", dateTime=" + dateTime +
+                ", recurrentType=" + recurrentType +
+                '}';
+    }
 }
