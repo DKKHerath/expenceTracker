@@ -132,8 +132,35 @@ public class ExpenseTrackerImpl implements ExpenseTracker {
     }
 
     //4.1 An advanced application will allow the user to add new categories.
-    //TOBE DONE
+    public void createCategory(String type, String name, String iconUrl, String budget) {
 
+        Budget budgetExist = null;
+
+        if (type.equals(TransactionType.EXPENSE)) {
+
+            if (!budget.isEmpty()) {
+                for (Budget bgt : budgets) {
+                    if (bgt.getName().equals(budget)) {
+                        budgetExist = bgt;
+                        break;
+                    }
+
+                }
+            }
+
+            if (budgetExist == null) {
+                System.out.println("ERROR: Budget Not Exist.");
+                return;
+            }
+
+            transactionCategories.add(new ExpenseCategory(TransactionType.EXPENSE, name, iconUrl, budgetExist));
+            System.out.println("SUCCESS_BUDGET_EXPENSE: Record Saved.");
+        } else {
+            transactionCategories.add(new IncomeCategory(TransactionType.INCOME, name, iconUrl));
+            System.out.println("SUCCESS_BUDGET_INCOME: Record Saved.");
+        }
+
+    }
 
     //5. Allow the user to enter a budget, specifying amounts for each category.
 

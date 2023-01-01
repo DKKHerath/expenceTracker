@@ -2,6 +2,7 @@ package asd.iit;
 
 import asd.iit.budget.Budget;
 import asd.iit.budget.BudgetModel;
+import asd.iit.category.CategoryModel;
 import asd.iit.category.TransactionCategory;
 import asd.iit.transaction.Transaction;
 import asd.iit.transaction.TransactionModel;
@@ -58,7 +59,11 @@ public class ExpenseTrackerController {
     }
 
     //4.1 An advanced application will allow the user to add new categories.
-    //TOBE DONE
+    @PostMapping("/category")
+    public ResponseEntity<Budget> createCategory(@RequestBody CategoryModel categoryModel) {
+        expenseTrackerImpl.createCategory(categoryModel.getType(), categoryModel.getName(), categoryModel.getIconUrl(), categoryModel.getBudget());
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
     //5. Allow the user to enter a budget, specifying amounts for each category.
     @PostMapping("/budget")
