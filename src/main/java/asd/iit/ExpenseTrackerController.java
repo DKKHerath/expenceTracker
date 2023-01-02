@@ -12,7 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -48,7 +47,12 @@ public class ExpenseTrackerController {
     }
 
     //3. Allow the user to edit/delete transactions
-    //TOBE DONE
+    @DeleteMapping("delete/transaction/{id}")
+    public ResponseEntity deleteTransaction(@PathVariable String id){
+        expenseTrackerImpl.deleteTransaction(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+
+    }
 
     //4. Allow the user to see a list of categories. The application should come with some preset categories.
     @GetMapping("/category")

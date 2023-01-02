@@ -42,7 +42,6 @@ public class ExpenseTrackerImpl implements ExpenseTracker {
         //EXPENSE
         transactionCategories.add(new ExpenseCategory(TransactionType.EXPENSE, "Food", "null", budgets.get(0)));
 
-
     }
 
     //1. Allow a user to see a list of recent transactions
@@ -120,7 +119,17 @@ public class ExpenseTrackerImpl implements ExpenseTracker {
 
 
     //3. Allow the user to edit/delete transactions
-    //TOBE DONE
+    public void deleteTransaction(String trnID) {
+        int index = -1;
+        for (Transaction transaction : transactions) {
+            if (transaction.getTrnId().toString().equals(trnID)) {
+                transactions.remove(transaction);
+                System.out.println("SUCCESS_TRANSACTION_DELETED: " + transaction.getTitle());
+                break;
+            }
+
+        }
+    }
 
 
     //4. Allow the user to see a list of categories. The application should come with some preset categories.
