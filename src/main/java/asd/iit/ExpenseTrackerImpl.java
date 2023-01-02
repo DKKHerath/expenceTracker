@@ -136,7 +136,7 @@ public class ExpenseTrackerImpl implements ExpenseTracker {
 
         Budget budgetExist = null;
 
-        if (type=="EXPENSE") {
+        if (type.equals(TransactionType.EXPENSE.toString())) {
 
             if (!budget.isEmpty()) {
                 for (Budget bgt : budgets) {
