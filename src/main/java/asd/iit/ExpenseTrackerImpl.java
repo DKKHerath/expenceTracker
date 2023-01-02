@@ -101,7 +101,7 @@ public class ExpenseTrackerImpl implements ExpenseTracker {
         }
 
         if (categoryTypeAvailable) {
-            if (transactionCategory.getType() == TransactionType.EXPENSE) {
+            if (transactionCategory.getType().toString() == "EXPENSE") {
                 //create an Expense
                 transactions.add(new Expense(title, amount, transactionCategory, desc, dateTime1, recurrentType1));
                 System.out.println("SUCCESS_EXPENSE: The Record saved.");
