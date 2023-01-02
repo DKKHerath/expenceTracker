@@ -7,10 +7,10 @@ public class TransactionModel {
     Double amount;
     String category;
     String desc;
-    LocalDateTime dateTime;
+    String dateTime;
     RecurrentType recurrentType;
 
-    public TransactionModel(String title, Double amount, String category, String desc, LocalDateTime dateTime, RecurrentType recurrentType) {
+    public TransactionModel(String title, Double amount, String category, String desc, String dateTime, RecurrentType recurrentType) {
         this.title = title;
         this.amount = amount;
         this.category = category;
@@ -52,11 +52,11 @@ public class TransactionModel {
     }
 
     public LocalDateTime getDateTime() {
-        return dateTime;
+        return LocalDateTime.parse(dateTime);
     }
 
     public void setDateTime(LocalDateTime dateTime) {
-        this.dateTime = dateTime;
+        this.dateTime = String.valueOf(dateTime);
     }
 
     public RecurrentType getRecurrentType() {
