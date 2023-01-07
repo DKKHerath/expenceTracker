@@ -5,10 +5,7 @@ import asd.iit.category.ExpenseCategory;
 import asd.iit.category.IncomeCategory;
 import asd.iit.category.TransactionCategory;
 import asd.iit.category.TransactionType;
-import asd.iit.transaction.Expense;
-import asd.iit.transaction.Income;
-import asd.iit.transaction.RecurrentType;
-import asd.iit.transaction.Transaction;
+import asd.iit.transaction.*;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -124,13 +121,29 @@ public class ExpenseTrackerImpl implements ExpenseTracker {
         for (Transaction transaction : transactions) {
             if (transaction.getTrnId().toString().equals(trnID)) {
                 transactions.remove(transaction);
-                System.out.println("SUCCESS_TRANSACTION_DELETED: " + transaction.getTitle());
+                System.out.println("SUCCESS_TRANSACTION_DELETE: " + transaction.getTitle());
                 break;
             }
 
         }
     }
 
+    //3.1. Allow the user to edit/delete transactions
+    public void updateTransaction(TransactionModelUpdate transactionModelUpdate) {
+        int index = -1;
+        for (Transaction transaction : transactions) {
+            if (transaction.getTrnId().toString().equals(transactionModelUpdate.getId())) {
+                transaction.setTitle(transactionModelUpdate.getTitle());
+                transaction.setAmount(transactionModelUpdate.getAmount());
+                transaction.setDescription(transactionModelUpdate.getDesc());
+                transaction.setDate(transactionModelUpdate.getDateTime());
+                transaction.setRecurrentType(transactionModelUpdate.getRecurrentType());
+                System.out.println("SUCCESS_TRANSACTION_EDIT: " + transaction.getTitle());
+                break;
+            }
+
+        }
+    }
 
     //4. Allow the user to see a list of categories. The application should come with some preset categories.
 

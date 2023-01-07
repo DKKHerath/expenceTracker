@@ -7,6 +7,7 @@ import asd.iit.category.TransactionCategory;
 import asd.iit.transaction.RecurrentType;
 import asd.iit.transaction.Transaction;
 import asd.iit.transaction.TransactionModel;
+import asd.iit.transaction.TransactionModelUpdate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,13 +44,21 @@ public class ExpenseTrackerController {
     public ResponseEntity<Transaction> createTransaction(@RequestBody TransactionModel transactionModel) {
         System.out.println(transactionModel.toString());
         expenseTrackerImpl.saveTransaction(transactionModel.getTitle(), transactionModel.getAmount(), transactionModel.getCategory(), transactionModel.getDesc(), transactionModel.getDateTime(), transactionModel.getRecurrentType());
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     //3. Allow the user to edit/delete transactions
     @DeleteMapping("delete/transaction/{id}")
     public ResponseEntity deleteTransaction(@PathVariable String id){
         expenseTrackerImpl.deleteTransaction(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+
+    }
+
+    //3.1. Allow the user to edit/delete transactions
+    @PutMapping("edit/transaction")
+    public ResponseEntity editTransaction(@RequestBody TransactionModelUpdate transactionModelUpdate) {
+        expenseTrackerImpl.updateTransaction(transactionModelUpdate);
         return new ResponseEntity<>(HttpStatus.OK);
 
     }
@@ -65,14 +74,14 @@ public class ExpenseTrackerController {
     @PostMapping("/category")
     public ResponseEntity<Budget> createCategory(@RequestBody CategoryModel categoryModel) {
         expenseTrackerImpl.createCategory(categoryModel.getType(), categoryModel.getName(), categoryModel.getIconUrl(), categoryModel.getBudget());
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     //5. Allow the user to enter a budget, specifying amounts for each category.
     @PostMapping("/budget")
     public ResponseEntity<Budget> createBudget(@RequestBody BudgetModel budgetModel) {
         expenseTrackerImpl.createABudget(budgetModel.getName(), budgetModel.getAlertAmount(), budgetModel.getTotalBudgetAmount());
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     //5.1
