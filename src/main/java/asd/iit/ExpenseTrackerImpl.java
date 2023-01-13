@@ -52,7 +52,7 @@ public class ExpenseTrackerImpl implements ExpenseTracker {
     // expense transaction and which category it falls under. A more advanced application will allow the user to enter a
     // note and to specify whether it is recurring)
     @Override
-    public void saveTransaction(String title, double amount, String category, String desc, LocalDateTime dateTime, RecurrentType recurrentType) {
+    public void createTransaction(String title, double amount, String category, String desc, LocalDateTime dateTime, RecurrentType recurrentType) {
         boolean categoryTypeAvailable = false;
         LocalDateTime dateTime1 = null;
         TransactionType transactionType = null;
@@ -216,7 +216,6 @@ public class ExpenseTrackerImpl implements ExpenseTracker {
     public ArrayList<Budget> getAllBudgets() {
         return budgets;
     }
-
 
     //6. Allow the user to track their progress against their budget by seeing how much they have spent in each category
     // against the budget for that category, as well as overall spending against overall budget.

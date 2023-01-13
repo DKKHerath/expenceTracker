@@ -43,7 +43,7 @@ public class ExpenseTrackerController {
     @PostMapping("/transaction")
     public ResponseEntity<Transaction> createTransaction(@RequestBody TransactionModel transactionModel) {
         System.out.println(transactionModel.toString());
-        expenseTrackerImpl.saveTransaction(transactionModel.getTitle(), transactionModel.getAmount(), transactionModel.getCategory(), transactionModel.getDesc(), transactionModel.getDateTime(), transactionModel.getRecurrentType());
+        expenseTrackerImpl.createTransaction(transactionModel.getTitle(), transactionModel.getAmount(), transactionModel.getCategory(), transactionModel.getDesc(), transactionModel.getDateTime(), transactionModel.getRecurrentType());
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 

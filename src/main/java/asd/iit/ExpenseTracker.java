@@ -12,7 +12,7 @@ import java.util.List;
 
 public interface ExpenseTracker {
 
-    void saveTransaction(String title, double amount, String category, String desc, LocalDateTime dateTime, RecurrentType recurrentType);
+    void createTransaction(String title, double amount, String category, String desc, LocalDateTime dateTime, RecurrentType recurrentType);
 
     ArrayList<Transaction> printAllTransactions();
 
