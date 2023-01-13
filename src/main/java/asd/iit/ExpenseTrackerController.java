@@ -49,7 +49,7 @@ public class ExpenseTrackerController {
 
     //3. Allow the user to edit/delete transactions
     @DeleteMapping("delete/transaction/{id}")
-    public ResponseEntity deleteTransaction(@PathVariable String id){
+    public ResponseEntity deleteTransaction(@PathVariable String id) {
         expenseTrackerImpl.deleteTransaction(id);
         return new ResponseEntity<>(HttpStatus.OK);
 

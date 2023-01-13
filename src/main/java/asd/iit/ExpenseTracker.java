@@ -4,6 +4,7 @@ import asd.iit.budget.Budget;
 import asd.iit.category.TransactionCategory;
 import asd.iit.transaction.RecurrentType;
 import asd.iit.transaction.Transaction;
+import asd.iit.transaction.TransactionModelUpdate;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -15,7 +16,16 @@ public interface ExpenseTracker {
 
     ArrayList<Transaction> printAllTransactions();
 
+    //3. Allow the user to edit/delete transactions
+    void deleteTransaction(String trnID);
+
+    //3.1. Allow the user to edit/delete transactions
+    void updateTransaction(TransactionModelUpdate transactionModelUpdate);
+
     ArrayList<TransactionCategory> printAllCategories();
+
+    //4.1 An advanced application will allow the user to add new categories.
+    void createCategory(String type, String name, String iconUrl, String budget);
 
     void createABudget(String name, Double alertAmount, Double totalBudgetAmount);
 
