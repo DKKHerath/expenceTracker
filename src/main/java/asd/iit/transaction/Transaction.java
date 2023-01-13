@@ -14,7 +14,7 @@ public class Transaction {
     private LocalDateTime date;
     private RecurrentType recurrentType;
 
-    public Transaction(String title, Double amount, TransactionCategory category, String description, LocalDateTime date, RecurrentType recurrentType) {
+    public Transaction(String title, Double amount, TransactionCategory category, String description, LocalDateTime date ) {
         this.trnId = setTrnId();
         this.title = title;
         this.amount = amount;

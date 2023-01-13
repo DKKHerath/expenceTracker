@@ -99,7 +99,10 @@ public class ExpenseTrackerImpl implements ExpenseTracker {
         if (categoryTypeAvailable) {
             if (transactionCategory.getType() == TransactionType.EXPENSE) {
                 //create an Expense
-                transactions.add(new Expense(title, amount, transactionCategory, desc, dateTime1, recurrentType1));
+                Expense newExpense=new Expense(title, amount, transactionCategory, desc, dateTime1);
+                newExpense.setRecurrentType(recurrentType1);
+
+                transactions.add(newExpense);
                 System.out.println("SUCCESS_EXPENSE: The Record saved.");
             } else {
                 //create an Income
