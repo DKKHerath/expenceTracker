@@ -106,7 +106,9 @@ public class ExpenseTrackerImpl implements ExpenseTracker {
                 System.out.println("SUCCESS_EXPENSE: The Record saved.");
             } else {
                 //create an Income
-                transactions.add(new Income(title, amount, transactionCategory, desc, dateTime1, recurrentType1));
+                Income newIncome=new Income(title, amount, transactionCategory, desc, dateTime1);
+                newIncome.setRecurrentType(recurrentType1);
+                transactions.add(newIncome);
                 System.out.println("SUCCESS_INCOME: The Record saved.");
 
             }
