@@ -1,26 +1,30 @@
 package asd.iit.user;
 
+import asd.iit.budget.Budget;
+import asd.iit.category.TransactionCategory;
 import asd.iit.transaction.Transaction;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 public class User {
     private final UUID userId;
+    ArrayList<Transaction> transactions;
+    ArrayList<Budget> budgets;
+    ArrayList<TransactionCategory> transactionCategories;
     private String userName;
     private String emailAddress;
-    private Currency defaultCurrency;
-    ArrayList<Transaction> transactions;
+    private String password;
 
-    public User(String userName, String emailAddress, Currency defaultCurrency) {
+    public User(String userName, String emailAddress, String password) {
         this.userId = setUserId();
         this.userName = userName;
         this.emailAddress = emailAddress;
-        this.defaultCurrency = defaultCurrency;
 
         //implementation of composition
-        this.transactions=new ArrayList<>();
+        this.transactions = new ArrayList<>();
+        this.budgets = new ArrayList<>();
+        this.transactionCategories = new ArrayList<>();
     }
 
     public UUID getUserId() {
@@ -47,12 +51,28 @@ public class User {
         this.emailAddress = emailAddress;
     }
 
-    public Currency getDefaultCurrency() {
-        return defaultCurrency;
+    public String getPassword() {
+        return password;
     }
 
-    public void setDefaultCurrency(Currency defaultCurrency) {
-        this.defaultCurrency = defaultCurrency;
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public ArrayList<Budget> getBudgets() {
+        return budgets;
+    }
+
+    public void setBudgets(Budget budget) {
+        this.budgets.add(budget);
+    }
+
+    public ArrayList<TransactionCategory> getTransactionCategories() {
+        return transactionCategories;
+    }
+
+    public void setTransactionCategories(TransactionCategory transactionCategorie) {
+        this.transactionCategories.add(transactionCategorie);
     }
 
     public ArrayList<Transaction> getTransactions() {
@@ -61,5 +81,13 @@ public class User {
 
     public void setTransactions(ArrayList<Transaction> transactions) {
         this.transactions = transactions;
+    }
+
+    public void setTransactions(Transaction transaction) {
+        this.transactions.add(transaction);
+    }
+
+    public void deleteTransaction(Transaction transaction) {
+        this.transactions.remove(transaction);
     }
 }

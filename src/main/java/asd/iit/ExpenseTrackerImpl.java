@@ -6,6 +6,7 @@ import asd.iit.category.IncomeCategory;
 import asd.iit.category.TransactionCategory;
 import asd.iit.category.TransactionType;
 import asd.iit.transaction.*;
+import asd.iit.user.User;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -17,15 +18,16 @@ import java.util.Map;
 @Service
 public class ExpenseTrackerImpl implements ExpenseTracker {
 
-    ArrayList<Transaction> transactions;
+
     ArrayList<Budget> budgets;
     ArrayList<TransactionCategory> transactionCategories;
+    User loggedInUser;
 
 
     public ExpenseTrackerImpl() {
-        this.transactions = new ArrayList<>();
         this.budgets = new ArrayList<>();
         this.transactionCategories = new ArrayList<>();
+
 
         //4. Allow the user to see a list of categories. The application should come with some preset categories.
 
@@ -39,12 +41,18 @@ public class ExpenseTrackerImpl implements ExpenseTracker {
         //EXPENSE
         transactionCategories.add(new ExpenseCategory(TransactionType.EXPENSE, "Food", "null", budgets.get(0)));
 
+
+        //hard coded user for the demonstration
+        User demoUser1 = new User("DEMOUSER1", "demo1@iit.lk", "password1");
+        loggedInUser = demoUser1;
+
+
     }
 
     //1. Allow a user to see a list of recent transactions
     @Override
     public ArrayList<Transaction> printAllTransactions() {
-        return transactions;
+        return loggedInUser.getTransactions();
     }
 
 
@@ -87,6 +95,13 @@ public class ExpenseTrackerImpl implements ExpenseTracker {
             System.out.println("ERROR3: Please provide a valid category.");
             return;
         } else {
+
+
+            //merge default categories with user specific categories
+            ArrayList<TransactionCategory> mergedCategories = new ArrayList<>();
+            mergedCategories.addAll(transactionCategories);
+            mergedCategories.addAll(loggedInUser.getTransactionCategories());
+
             for (TransactionCategory tc : transactionCategories) {
                 if (tc.getName().equals(category)) {
                     categoryTypeAvailable = true;
@@ -101,14 +116,14 @@ public class ExpenseTrackerImpl implements ExpenseTracker {
                 //create an Expense
                 Expense newExpense = new Expense(title, amount, transactionCategory, desc, dateTime1);
                 newExpense.setRecurrentType(recurrentType1);
+                loggedInUser.setTransactions(newExpense);
 
-                transactions.add(newExpense);
                 System.out.println("SUCCESS_EXPENSE: The Record saved.");
             } else {
                 //create an Income
                 Income newIncome = new Income(title, amount, transactionCategory, desc, dateTime1);
                 newIncome.setRecurrentType(recurrentType1);
-                transactions.add(newIncome);
+                loggedInUser.setTransactions(newIncome);
                 System.out.println("SUCCESS_INCOME: The Record saved.");
 
             }
@@ -124,9 +139,9 @@ public class ExpenseTrackerImpl implements ExpenseTracker {
     @Override
     public void deleteTransaction(String trnID) {
         int index = -1;
-        for (Transaction transaction : transactions) {
+        for (Transaction transaction : loggedInUser.getTransactions()) {
             if (transaction.getTrnId().toString().equals(trnID)) {
-                transactions.remove(transaction);
+                loggedInUser.deleteTransaction(transaction);
                 System.out.println("SUCCESS_TRANSACTION_DELETE: " + transaction.getTitle());
                 break;
             }
@@ -139,7 +154,7 @@ public class ExpenseTrackerImpl implements ExpenseTracker {
     @Override
     public void updateTransaction(TransactionModelUpdate transactionModelUpdate) {
         int index = -1;
-        for (Transaction transaction : transactions) {
+        for (Transaction transaction : loggedInUser.getTransactions()) {
             if (transaction.getTrnId().toString().equals(transactionModelUpdate.getId())) {
                 transaction.setTitle(transactionModelUpdate.getTitle());
                 transaction.setAmount(transactionModelUpdate.getAmount());
@@ -158,7 +173,12 @@ public class ExpenseTrackerImpl implements ExpenseTracker {
 
     @Override
     public ArrayList<TransactionCategory> printAllCategories() {
-        return transactionCategories;
+        //merge default categories with user specific categories
+        ArrayList<TransactionCategory> mergedCategories = new ArrayList<>();
+        mergedCategories.addAll(transactionCategories);
+        mergedCategories.addAll(loggedInUser.getTransactionCategories());
+
+        return mergedCategories;
     }
 
     //4.1 An advanced application will allow the user to add new categories.
@@ -170,7 +190,13 @@ public class ExpenseTrackerImpl implements ExpenseTracker {
         if (type.equals(TransactionType.EXPENSE.toString())) {
 
             if (!budget.isEmpty()) {
-                for (Budget bgt : budgets) {
+
+                //merge default budgets with user specific budgets
+                ArrayList<Budget> mergedBudgets = new ArrayList<>();
+                mergedBudgets.addAll(budgets);
+                mergedBudgets.addAll(loggedInUser.getBudgets());
+
+                for (Budget bgt : mergedBudgets) {
                     if (bgt.getName().equals(budget)) {
                         budgetExist = bgt;
                         break;
@@ -184,10 +210,10 @@ public class ExpenseTrackerImpl implements ExpenseTracker {
                 return;
             }
 
-            transactionCategories.add(new ExpenseCategory(TransactionType.EXPENSE, name, iconUrl, budgetExist));
+            loggedInUser.setTransactionCategories(new ExpenseCategory(TransactionType.EXPENSE, name, iconUrl, budgetExist));
             System.out.println("SUCCESS_BUDGET_EXPENSE: Record Saved.");
         } else {
-            transactionCategories.add(new IncomeCategory(TransactionType.INCOME, name, iconUrl));
+            loggedInUser.setTransactionCategories(new IncomeCategory(TransactionType.INCOME, name, iconUrl));
             System.out.println("SUCCESS_BUDGET_INCOME: Record Saved.");
         }
 
@@ -213,13 +239,18 @@ public class ExpenseTrackerImpl implements ExpenseTracker {
             return;
         }
 
-        budgets.add(new Budget(name, alertAmount, totalBudgetAmount));
+        loggedInUser.setBudgets(new Budget(name, alertAmount, totalBudgetAmount));
         System.out.println("SUCCESS_NEW_BUDGET: Record saved.");
     }
 
     @Override
     public ArrayList<Budget> getAllBudgets() {
-        return budgets;
+        //merge default budgets with user specific budgets
+        ArrayList<Budget> mergedBudgets = new ArrayList<>();
+        mergedBudgets.addAll(budgets);
+        mergedBudgets.addAll(loggedInUser.getBudgets());
+
+        return mergedBudgets;
     }
 
     //6. Allow the user to track their progress against their budget by seeing how much they have spent in each category
@@ -232,7 +263,7 @@ public class ExpenseTrackerImpl implements ExpenseTracker {
         String budgetName = "";
 
         //Calculating transactions expenses for each category
-        for (Transaction transaction : transactions) {
+        for (Transaction transaction : loggedInUser.getTransactions()) {
             if (transaction.getCategory().getType() == TransactionType.EXPENSE) {
                 budgetName = transaction.getCategory().getName();
                 if (budgetUsage.containsKey(budgetName)) {
@@ -246,7 +277,11 @@ public class ExpenseTrackerImpl implements ExpenseTracker {
         }
 
         //Check against the overall budget
-        for (Budget bgt : budgets) {
+        //merge default budgets with user specific budgets
+        ArrayList<Budget> mergedBudgets = new ArrayList<>();
+        mergedBudgets.addAll(budgets);
+        mergedBudgets.addAll(loggedInUser.getBudgets());
+        for (Budget bgt : mergedBudgets) {
 
             if (budgetUsage.containsKey(bgt.getName())) {
                 output.add("Budget Name:" + bgt.getName() +
@@ -274,7 +309,7 @@ public class ExpenseTrackerImpl implements ExpenseTracker {
         String budgetName = "";
 
         //Calculating transactions expenses for each category
-        for (Transaction transaction : transactions) {
+        for (Transaction transaction : loggedInUser.getTransactions()) {
             if (transaction.getCategory().getType() == TransactionType.EXPENSE) {
                 budgetName = transaction.getCategory().getName();
                 if (budgetUsage.containsKey(budgetName)) {
@@ -288,7 +323,12 @@ public class ExpenseTrackerImpl implements ExpenseTracker {
         }
 
         //Check the overall budget
-        for (Budget bgt : budgets) {
+
+        //merge default budgets with user specific budgets
+        ArrayList<Budget> mergedBudgets = new ArrayList<>();
+        mergedBudgets.addAll(budgets);
+        mergedBudgets.addAll(loggedInUser.getBudgets());
+        for (Budget bgt : mergedBudgets) {
             totalBudget += bgt.getTotalBudgetAmount();
 
             if (budgetUsage.containsKey(bgt.getName())) {
