@@ -10,9 +10,9 @@ import java.util.UUID;
 
 public class User {
     private final UUID userId;
-    List<Transaction> transactions;
-    List<Budget> budgets;
-    List<TransactionCategory> transactionCategories;
+    ArrayList<Transaction> transactions;
+    ArrayList<Budget> budgets;
+    ArrayList<TransactionCategory> transactionCategories;
     private String userName;
     private String emailAddress;
     private String password;

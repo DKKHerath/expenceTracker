@@ -19,8 +19,8 @@ import java.util.Map;
 public class ExpenseTrackerImpl implements ExpenseTracker {
 
 
-    List<Budget> budgets;
-    List<TransactionCategory> transactionCategories;
+    ArrayList<Budget> budgets;
+    ArrayList<TransactionCategory> transactionCategories;
     User loggedInUser;
 
 
