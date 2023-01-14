@@ -41,7 +41,7 @@ public class ExpenseTrackerImpl implements ExpenseTracker {
         transactionCategories.add(new IncomeCategory(TransactionType.INCOME, "Savings", "null"));
 
         //EXPENSE
-        transactionCategories.add(new ExpenseCategory(TransactionType.EXPENSE, "Food", "null", budgets.get(0)));
+        transactionCategories.add(new ExpenseCategory(TransactionType.EXPENSE, "Standard Budget", "null", budgets.get(0)));
 
         //hard coded user for the demonstration
         User demoUser1 = new User("DEMOUSER1", "demo1@iit.lk", "password1");
@@ -262,6 +262,11 @@ public class ExpenseTrackerImpl implements ExpenseTracker {
         List<String> output = new ArrayList<>();
         Map<String, Double> budgetUsage = new HashMap<>();
         String budgetName = "";
+
+
+        for (Transaction transaction : loggedInUser.getTransactions()) {
+            System.out.println(transaction.toString());
+        }
 
         //Calculating transactions expenses for each category
         for (Transaction transaction : loggedInUser.getTransactions()) {
