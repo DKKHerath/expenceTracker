@@ -32,15 +32,16 @@ public class ExpenseTrackerImpl implements ExpenseTracker {
         //4. Allow the user to see a list of categories. The application should come with some preset categories.
 
         //Budget
-        budgets.add(new Budget("Food", 1000d, 10000d));
+        budgets.add(new Budget("Standard Budget", 1000d, 10000d));
 
         //INCOME
         transactionCategories.add(new IncomeCategory(TransactionType.INCOME, "Salary", "null"));
-        transactionCategories.add(new IncomeCategory(TransactionType.INCOME, "Profit", "null"));
+        transactionCategories.add(new IncomeCategory(TransactionType.INCOME, "Deposit", "null"));
+        transactionCategories.add(new IncomeCategory(TransactionType.INCOME, "Re-Imbursements", "null"));
+        transactionCategories.add(new IncomeCategory(TransactionType.INCOME, "Savings", "null"));
 
         //EXPENSE
         transactionCategories.add(new ExpenseCategory(TransactionType.EXPENSE, "Food", "null", budgets.get(0)));
-
 
         //hard coded user for the demonstration
         User demoUser1 = new User("DEMOUSER1", "demo1@iit.lk", "password1");
@@ -102,7 +103,8 @@ public class ExpenseTrackerImpl implements ExpenseTracker {
             mergedCategories.addAll(transactionCategories);
             mergedCategories.addAll(loggedInUser.getTransactionCategories());
 
-            for (TransactionCategory tc : transactionCategories) {
+            System.out.println(category);
+            for (TransactionCategory tc : mergedCategories) {
                 if (tc.getName().equals(category)) {
                     categoryTypeAvailable = true;
                     transactionCategory = tc;
@@ -177,7 +179,6 @@ public class ExpenseTrackerImpl implements ExpenseTracker {
         ArrayList<TransactionCategory> mergedCategories = new ArrayList<>();
         mergedCategories.addAll(transactionCategories);
         mergedCategories.addAll(loggedInUser.getTransactionCategories());
-
         return mergedCategories;
     }
 
