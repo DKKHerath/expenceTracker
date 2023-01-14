@@ -41,7 +41,7 @@ public class ExpenseTrackerImpl implements ExpenseTracker {
         transactionCategories.add(new IncomeCategory(TransactionType.INCOME, "Savings", "null"));
 
         //EXPENSE
-        transactionCategories.add(new ExpenseCategory(TransactionType.EXPENSE, "Standard Budget", "null", budgets.get(0)));
+        transactionCategories.add(new ExpenseCategory(TransactionType.EXPENSE, "Miscellaneous", "null", budgets.get(0)));
 
         //hard coded user for the demonstration
         User demoUser1 = new User("DEMOUSER1", "demo1@iit.lk", "password1");
@@ -272,7 +272,9 @@ public class ExpenseTrackerImpl implements ExpenseTracker {
         //Calculating transactions expenses for each category
         for (Transaction transaction : loggedInUser.getTransactions()) {
             if (transaction.getCategory().getType() == TransactionType.EXPENSE) {
-                budgetName = transaction.getCategory().getName();
+                ExpenseCategory expenseCategory = (ExpenseCategory) transaction.getCategory();
+
+                budgetName = expenseCategory.getBudget().getName();
                 if (budgetUsage.containsKey(budgetName)) {
                     budgetUsage.put(budgetName, (budgetUsage.get(budgetName) + transaction.getAmount()));
                 } else {
@@ -318,7 +320,9 @@ public class ExpenseTrackerImpl implements ExpenseTracker {
         //Calculating transactions expenses for each category
         for (Transaction transaction : loggedInUser.getTransactions()) {
             if (transaction.getCategory().getType() == TransactionType.EXPENSE) {
-                budgetName = transaction.getCategory().getName();
+                ExpenseCategory expenseCategory = (ExpenseCategory) transaction.getCategory();
+
+                budgetName = expenseCategory.getBudget().getName();
                 if (budgetUsage.containsKey(budgetName)) {
                     budgetUsage.put(budgetName, (budgetUsage.get(budgetName) + transaction.getAmount()));
                 } else {
