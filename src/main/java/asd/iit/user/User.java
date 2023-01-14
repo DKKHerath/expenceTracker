@@ -5,13 +5,14 @@ import asd.iit.category.TransactionCategory;
 import asd.iit.transaction.Transaction;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class User {
     private final UUID userId;
-    ArrayList<Transaction> transactions;
-    ArrayList<Budget> budgets;
-    ArrayList<TransactionCategory> transactionCategories;
+    List<Transaction> transactions;
+    List<Budget> budgets;
+    List<TransactionCategory> transactionCategories;
     private String userName;
     private String emailAddress;
     private String password;
