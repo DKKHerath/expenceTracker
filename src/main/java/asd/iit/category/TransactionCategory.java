@@ -2,7 +2,7 @@ package asd.iit.category;
 
 import java.util.UUID;
 
-public class TransactionCategory {
+public abstract class TransactionCategory {
     private final UUID trsId;
     private TransactionType type;
     private String name;

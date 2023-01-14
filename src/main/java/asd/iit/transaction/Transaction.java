@@ -5,7 +5,7 @@ import asd.iit.category.TransactionCategory;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-public class Transaction {
+public abstract class Transaction {
     private final UUID trnId;
     private String title;
     private Double amount;
