@@ -179,6 +179,7 @@ public class ExpenseTrackerImpl implements ExpenseTracker {
         ArrayList<TransactionCategory> mergedCategories = new ArrayList<>();
         mergedCategories.addAll(transactionCategories);
         mergedCategories.addAll(loggedInUser.getTransactionCategories());
+
         return mergedCategories;
     }
 
